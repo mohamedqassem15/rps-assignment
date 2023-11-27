@@ -6,6 +6,11 @@
     <title>HTML 5 Boilerplate</title>
   </head>
   <body>
+	<div class="choices">
+		<button>Rock</button>
+		<button>Paper</button>
+		<button>Scissor</button>
+	</div>
 	<script>
 
 		options = ["rock", "paper", "scissor"]
@@ -30,23 +35,29 @@
 				return `You lost! ${computerChoice} beats ${playerChoice}`;
 			}
 		};
-		function game(){
+		function game(playerChoice){
 
-			for (i = 0; i < 5; i++){
-				computerSelection = getComputerChoice();
-				let playerSelection = prompt("Make a selection(rock, paper, scissor):").toLowerCase();
 	
-				resultPrompt = getWinner(playerSelection, computerSelection)
+			computerSelection = getComputerChoice();
+			let playerSelection = playerChoice.toLowerCase();
+
+			resultPrompt = getWinner(playerSelection, computerSelection)
+
+			console.log(resultPrompt)
 	
-				console.log(resultPrompt)
-			}
-			
-			
 
 		};
 	
-// random comment
-	
+		let choices = document.querySelector(".choices");
+
+		choices.addEventListener("click", (event) => {
+
+			playerChoice = event.target.textContent;
+			game(playerChoice);
+
+		});
+
+
 	</script>
   </body>
 </html>
