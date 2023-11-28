@@ -11,6 +11,9 @@
 		<button>Paper</button>
 		<button>Scissor</button>
 	</div>
+	<div id="resultsContainer">
+
+	</div>
 	<script>
 
 		options = ["rock", "paper", "scissor"]
@@ -19,42 +22,91 @@
 		
 		};
 		function getWinner(playerChoice, computerChoice){
+
+			let winner = "tie";
+
+
 			if (playerChoice === computerChoice) {
-				return `You both picked ${playerChoice}. It is a tie!`;
+				return [`You both picked ${playerChoice}. It is a tie!`, winner];
 			}
 			else if (playerChoice === "rock" && computerChoice === "scissor"){
-				return `You won! ${playerChoice} beats ${computerChoice}`;
+				winner = "player";
+				return [`You won! ${playerChoice} beats ${computerChoice}`, winner];
+
 			}
 			else if (playerChoice === "paper" && computerChoice === "rock"){
-				return `You won! ${playerChoice} beats ${computerChoice}`;
+				winner = "player";
+				return [`You won! ${playerChoice} beats ${computerChoice}`, winner];
 			}
 			else if (playerChoice === "scissor" && computerChoice === "paper"){
-				return `You won! ${playerChoice} beats ${computerChoice}`;
+				winner = "player";
+				return [`You won! ${playerChoice} beats ${computerChoice}`, winner];
 			}
 			else{
-				return `You lost! ${computerChoice} beats ${playerChoice}`;
+				winner = "computer";
+				return [`You lost! ${computerChoice} beats ${playerChoice}`, winner];
 			}
 		};
 		function game(playerChoice){
 
 	
-			computerSelection = getComputerChoice();
+			let computerSelection = getComputerChoice();
 			let playerSelection = playerChoice.toLowerCase();
 
-			resultPrompt = getWinner(playerSelection, computerSelection)
+			let results = getWinner(playerSelection, computerSelection)
 
-			console.log(resultPrompt)
+
+			return results;
 	
 
 		};
 	
 		let choices = document.querySelector(".choices");
 
+
+		let computerScore = 0;
+		let playerScore = 0;
+
 		choices.addEventListener("click", (event) => {
 
-			playerChoice = event.target.textContent;
-			game(playerChoice);
+			if (playerScore < 5 && computerScore < 5){
 
+				
+				let playerChoice = event.target.textContent;
+				let gameResult = game(playerChoice);
+
+				let gamePrompt = gameResult[0];
+				let winner = gameResult[1];
+
+
+
+				if (winner === "player") playerScore += 1;
+					else if (winner === "computer") computerScore += 1;
+
+				let scorePrompt = "Player: " + playerScore + "    " + "Computer: " + computerScore;
+				
+				
+				
+
+				let resultsContainer = document.getElementById('resultsContainer');
+
+				let resultElement = document.createElement('p');
+				let promptElement = document.createElement('p');
+
+				resultElement.textContent = gamePrompt;
+				promptElement.textContent = scorePrompt;
+
+
+				resultsContainer.appendChild(resultElement);
+				resultsContainer.appendChild(promptElement);
+
+				if (playerScore >= 5 || computerScore >= 5){
+
+					let gameOverPrompt = document.createElement('p');
+					gameOverPrompt.textContent = playerScore > computerScore ? ("Player Won " + playerScore + " to " + computerScore) : ("Computer Won " + computerScore + " to " + playerScore) ;
+					resultsContainer.appendChild(gameOverPrompt);
+				};
+			};
 		});
 
 
